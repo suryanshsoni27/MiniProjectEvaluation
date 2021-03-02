@@ -1,0 +1,1637 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Project Evaluation}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+   
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{training\PYZus{}testing} \PY{k+kn}{import} \PY{o}{*}
+
+\PY{n}{pathIris} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./data/iris.scale.txt}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{patha4a} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./data/a4a.txt}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{patha4a\PYZus{}test} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./data/a4a\PYZus{}test.txt}\PY{l+s+s1}{\PYZsq{}}
+
+\PY{n}{g1} \PY{o}{=} \PY{n}{getMyData}\PY{p}{(}\PY{n}{pathForRequstedFile} \PY{o}{=} \PY{n}{pathIris}\PY{p}{,}\PY{n}{tSize}\PY{o}{=}\PY{l+m+mf}{0.25}\PY{p}{,}\PY{n}{shfle} \PY{o}{=} \PY{k+kc}{True}\PY{p}{,}\PY{n}{fileName} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{irisDataset}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{features}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{)}
+\PY{n}{g1}\PY{o}{.}\PY{n}{makeFilesAvailable}\PY{p}{(}\PY{n}{pathForRequstedFile} \PY{o}{=} \PY{n}{pathIris}\PY{p}{)}
+\PY{n}{X\PYZus{}train2}\PY{p}{,}\PY{n}{y\PYZus{}train2}\PY{p}{,}\PY{n}{X\PYZus{}test2}\PY{p}{,}\PY{n}{y\PYZus{}test2} \PY{o}{=} \PY{n}{g1}\PY{o}{.}\PY{n}{getDataset}\PY{p}{(}\PY{p}{)}
+\PY{n}{g2} \PY{o}{=} \PY{n}{getMyData}\PY{p}{(}\PY{n}{pathForRequstedFile} \PY{o}{=} \PY{n}{patha4a}\PY{p}{,}\PY{n}{tSize}\PY{o}{=}\PY{l+m+mf}{0.25}\PY{p}{,}\PY{n}{shfle} \PY{o}{=} \PY{k+kc}{True}\PY{p}{,}\PY{n}{fileName} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a4aDataset}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{features}\PY{o}{=}\PY{l+m+mi}{123}\PY{p}{)}
+\PY{n}{g2}\PY{o}{.}\PY{n}{makeFilesAvailable}\PY{p}{(}\PY{n}{pathForRequstedFile} \PY{o}{=} \PY{n}{patha4a}\PY{p}{)}
+\PY{n}{X\PYZus{}train3}\PY{p}{,}\PY{n}{y\PYZus{}train3}\PY{p}{,}\PY{n}{X\PYZus{}test3}\PY{p}{,}\PY{n}{y\PYZus{}test3} \PY{o}{=} \PY{n}{g2}\PY{o}{.}\PY{n}{getDataset}\PY{p}{(}\PY{p}{)}
+\PY{n}{g3} \PY{o}{=} \PY{n}{getMyData}\PY{p}{(}\PY{n}{pathForRequstedFile} \PY{o}{=} \PY{n}{patha4a\PYZus{}test}\PY{p}{,}\PY{n}{tSize}\PY{o}{=}\PY{l+m+mf}{0.25}\PY{p}{,}\PY{n}{shfle} \PY{o}{=} \PY{k+kc}{False}\PY{p}{,}\PY{n}{fileName} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a4a\PYZus{}testDataset}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{features}\PY{o}{=}\PY{l+m+mi}{123}\PY{p}{)}
+\PY{n}{g3}\PY{o}{.}\PY{n}{makeFilesAvailable}\PY{p}{(}\PY{n}{pathForRequstedFile} \PY{o}{=} \PY{n}{patha4a\PYZus{}test}\PY{p}{)}
+\PY{n}{X\PYZus{}train4}\PY{p}{,}\PY{n}{y\PYZus{}train4}\PY{p}{,}\PY{n}{X\PYZus{}test4}\PY{p}{,}\PY{n}{y\PYZus{}test4} \PY{o}{=} \PY{n}{g3}\PY{o}{.}\PY{n}{getDataset}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{perceptron\PYZus{}new} \PY{k+kn}{import} \PY{o}{*}
+\PY{k+kn}{from} \PY{n+nn}{knn} \PY{k+kn}{import} \PY{o}{*}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np} 
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{accuracy}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{:}
+    \PY{n}{accuracy} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{y\PYZus{}true} \PY{o}{==} \PY{n}{y\PYZus{}pred}\PY{p}{)} \PY{o}{/} \PY{n+nb}{len}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{p}{)}
+    \PY{n}{mc} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{p}{)}\PY{p}{)}\PY{p}{:} 
+        \PY{k}{if} \PY{n}{y\PYZus{}true}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{!=} \PY{n}{y\PYZus{}pred}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{:}
+            \PY{n}{mc} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            \PY{k}{if} \PY{n}{i}\PY{o}{\PYZpc{}}\PY{k}{10} == 0:
+                \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Iterations }\PY{l+s+si}{\PYZob{}i\PYZcb{}}\PY{l+s+s2}{ misclassification }\PY{l+s+si}{\PYZob{}mc\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{o}{=}\PY{n}{i}\PY{p}{,}\PY{n}{mc} \PY{o}{=} \PY{n}{mc}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{accuracy}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}IRIS Experiment\PYZsh{}\PYZsh{}\PYZsh{}}
+\PY{c+c1}{\PYZsh{}Perceptron}
+
+\PY{n}{iterations} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{45}\PY{p}{,}\PY{l+m+mi}{65}\PY{p}{,}\PY{l+m+mi}{95}\PY{p}{,}\PY{l+m+mi}{110}\PY{p}{]}
+\PY{n}{iteratiosEvaluations} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{k}{def} \PY{n+nf}{perceptronEvaluator}\PY{p}{(}\PY{n}{iterations}\PY{p}{,}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,}\PY{n}{X\PYZus{}test}\PY{p}{,}\PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{:}
+    \PY{n}{li} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{iterations}\PY{p}{:}
+        \PY{n}{model} \PY{o}{=} \PY{n}{Perceptron}\PY{p}{(}\PY{n+nb}{iter}\PY{o}{=}\PY{n}{i}\PY{p}{)}
+        \PY{n}{model}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Accuracy on training set}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{acc1} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{averageAccuracy}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+        \PY{n}{li}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{acc1}\PY{p}{)}
+        \PY{n}{iteratiosEvaluations}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{li}  
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{training accuracy is }\PY{l+s+si}{\PYZob{}acc1\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{acc1} \PY{o}{=} \PY{n}{acc1}\PY{p}{)}\PY{p}{)}
+        \PY{n}{model}\PY{o}{.}\PY{n}{bestAttributes}\PY{p}{(}\PY{n}{y\PYZus{}train}\PY{p}{)}
+        \PY{n}{li} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{return} \PY{n}{iteratiosEvaluations}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{val\PYZus{}a4a} \PY{o}{=} \PY{n}{perceptronEvaluator}\PY{p}{(}\PY{n}{iterations} \PY{o}{=} \PY{n}{iterations}\PY{p}{,}\PY{n}{X\PYZus{}train} \PY{o}{=} \PY{n}{X\PYZus{}train3}\PY{p}{,}\PY{n}{y\PYZus{}train}\PY{o}{=} \PY{n}{y\PYZus{}train3}\PY{p}{,}\PY{n}{X\PYZus{}test} \PY{o}{=} \PY{n}{X\PYZus{}test3}\PY{p}{,}\PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{y\PYZus{}test3}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 4335/20835
+Accuracy on training set
+training accuracy is 0.8002879769618431
+intercept value is [-5.]
+Most important features are: [-7. -7. -7. -8. -9.] and their respective weights
+are: [111  92  71  34  77]
+Least important features are: [[ 0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.
+0.  0.  0.  0.  0.  0.
+  -1.]] and their respective weights are: [122  36  29  37 107  47 103  99  19
+96  32  94 112  81   9 120  68  12
+  93]
+Number of bottom features \{bottom\_features.shape[0]\}
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 4335/20835
+Accuracy on training set
+training accuracy is 0.8280297576193905
+intercept value is [-5.]
+Most important features are: [-7.  7. -8. -8. -9.] and their respective weights
+are: [ 41  58  71  77 111]
+Least important features are: [[ 0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.
+0.  0.  0.  0.  0.  0.
+   0.  0. -1. -1. -1. -1. -1. -1. -1.]] and their respective weights are: [122
+28  30  32 113 107 104  23 103  70  74  98  96  94  85  67  17  44
+ 120   4  89  99 112  42 100 110 101]
+Number of bottom features \{bottom\_features.shape[0]\}
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 4335/20835
+Accuracy on training set
+training accuracy is 0.7970722342212623
+intercept value is [-5.]
+Most important features are: [ -8.  -8.  -9.  10. -17.] and their respective
+weights are: [ 71  34  77  83 111]
+Least important features are: [[ 0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.
+0.  0.  0. -1.]] and their respective weights are: [122  44  96  63  35  29  28
+70  21  17  74  14  24  89   4  76]
+Number of bottom features \{bottom\_features.shape[0]\}
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 4335/20835
+Iteration : 10
+>Misclassifications = 4295/20835
+Accuracy on training set
+training accuracy is 0.8135349172066235
+intercept value is [-5.]
+Most important features are: [  8.  -8.   9. -10. -19.] and their respective
+weights are: [ 83 108  45  33 111]
+Least important features are: [[ 0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.
+0.  0.  0. -1. -1. -1.
+  -1. -1. -1. -1.]] and their respective weights are: [122  98  96  37  35  32
+25  68  21  70  15  74  66  81   5  85 101 120
+  44  54 104  56]
+Number of bottom features \{bottom\_features.shape[0]\}
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 4335/20835
+Iteration : 10
+>Misclassifications = 4295/20835
+Iteration : 20
+>Misclassifications = 4314/20835
+Accuracy on training set
+training accuracy is 0.8243820494360451
+intercept value is [-5.]
+Most important features are: [ -8.  -9.  10. -12. -23.] and their respective
+weights are: [ 34  71  83  33 111]
+Least important features are: [[ 0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.  0.
+0.  0.  0.  0. -1. -1.
+  -1. -1. -1.]] and their respective weights are: [122  25  35  21  37  98  96
+32  89 109  65   2  76  63  74 118  68  36
+  62  78  44]
+Number of bottom features \{bottom\_features.shape[0]\}
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 4335/20835
+Iteration : 10
+>Misclassifications = 4295/20835
+Iteration : 20
+>Misclassifications = 4314/20835
+Iteration : 30
+>Misclassifications = 4317/20835
+Iteration : 40
+>Misclassifications = 4314/20835
+Accuracy on training set
+training accuracy is 0.8205423566114711
+intercept value is [-5.]
+Most important features are: [ -9.  -9.  10. -13. -24.] and their respective
+weights are: [ 71  34  83  33 111]
+Least important features are: [[0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]] and
+their respective weights are: [122  81  21  96  32  17  35 109 105  93  66   2
+47  68]
+Number of bottom features \{bottom\_features.shape[0]\}
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 4335/20835
+Iteration : 10
+>Misclassifications = 4295/20835
+Iteration : 20
+>Misclassifications = 4314/20835
+Iteration : 30
+>Misclassifications = 4317/20835
+Iteration : 40
+>Misclassifications = 4314/20835
+Iteration : 50
+>Misclassifications = 4291/20835
+Iteration : 60
+>Misclassifications = 4363/20835
+Accuracy on training set
+training accuracy is 0.8131029517638589
+intercept value is [-5.]
+Most important features are: [  9.  -9.  -9. -13. -25.] and their respective
+weights are: [ 83  11 108  33 111]
+Least important features are: [[0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+0. 0.]] and their respective weights are: [122  21 105  35  37 104  99  30  98
+96  28  66  68  74  76  78   2  93]
+Number of bottom features \{bottom\_features.shape[0]\}
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 4335/20835
+Iteration : 10
+>Misclassifications = 4295/20835
+Iteration : 20
+>Misclassifications = 4314/20835
+Iteration : 30
+>Misclassifications = 4317/20835
+Iteration : 40
+>Misclassifications = 4314/20835
+Iteration : 50
+>Misclassifications = 4291/20835
+Iteration : 60
+>Misclassifications = 4363/20835
+Iteration : 70
+>Misclassifications = 4348/20835
+Iteration : 80
+>Misclassifications = 4345/20835
+Iteration : 90
+>Misclassifications = 4379/20835
+Accuracy on training set
+training accuracy is 0.8112790976721862
+intercept value is [-5.]
+Most important features are: [ -9.  -9.  11. -13. -25.] and their respective
+weights are: [ 11 108  83  33 111]
+Least important features are: [[0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+0. 0. 0.]] and their respective weights are: [122  74  70  66  54  96  44 104
+78  37  35  30  28  25  21 105   5  10
+ 115]
+Number of bottom features \{bottom\_features.shape[0]\}
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 4335/20835
+Iteration : 10
+>Misclassifications = 4295/20835
+Iteration : 20
+>Misclassifications = 4314/20835
+Iteration : 30
+>Misclassifications = 4317/20835
+Iteration : 40
+>Misclassifications = 4314/20835
+Iteration : 50
+>Misclassifications = 4291/20835
+Iteration : 60
+>Misclassifications = 4363/20835
+Iteration : 70
+>Misclassifications = 4348/20835
+Iteration : 80
+>Misclassifications = 4345/20835
+Iteration : 90
+>Misclassifications = 4379/20835
+Iteration : 100
+>Misclassifications = 4282/20835
+Accuracy on training set
+training accuracy is 0.8185265178785697
+intercept value is [-5.]
+Most important features are: [-10. -10.  12. -13. -25.] and their respective
+weights are: [ 11 108  83  33 111]
+Least important features are: [[0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]]
+and their respective weights are: [122  76 121  94  96  54 101 106  37  35  28
+25  21  78   4]
+Number of bottom features \{bottom\_features.shape[0]\}
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{val\PYZus{}a4a}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+
+
+
+
+
+
+\PY{k}{def} \PY{n+nf}{plotter}\PY{p}{(}\PY{n}{vali}\PY{p}{)}\PY{p}{:}
+    \PY{n}{training} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{testing} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{vali}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+        \PY{n}{k} \PY{o}{=} \PY{n}{vali}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+        \PY{n}{training}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{k}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} testing.append(k[1])}
+    
+    \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{iterations}\PY{p}{,}\PY{n}{training}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} plt.plot(iterations,testing)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Perceptron accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+    \PY{n}{training} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{testing} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+
+\PY{n}{plotter}\PY{p}{(}\PY{n}{val\PYZus{}a4a}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<built-in method values of dict object at 0x7f96f760b7d0>
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_5_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{val\PYZus{}iris} \PY{o}{=} \PY{n}{perceptronEvaluator}\PY{p}{(}\PY{n}{iterations} \PY{o}{=} \PY{n}{iterations}\PY{p}{,}\PY{n}{X\PYZus{}train} \PY{o}{=} \PY{n}{X\PYZus{}train2}\PY{p}{,}\PY{n}{y\PYZus{}train} \PY{o}{=} \PY{n}{y\PYZus{}train2}\PY{p}{,}\PY{n}{X\PYZus{}test} \PY{o}{=} \PY{n}{X\PYZus{}test2}\PY{p}{,}\PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{y\PYZus{}test2}\PY{p}{)}
+\PY{n}{plotter}\PY{p}{(}\PY{n}{val\PYZus{}iris}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 5/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 36/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 15/112
+Accuracy on training set
+training accuracy is 0.7232142857142857
+intercept value is [-1.]
+Most important features are: [-0.4444434 -1.6440671 -1.75       2.166667 ] and
+their respective weights are: [0 2 3 1]
+Least important features are: [[-0.4444434  -1.6440671  -1.75      ]
+ [ 0.27778113  2.7118643  -1.33333138]
+ [ 0.3333316   1.1186445   2.24999978]] and their respective weights are: [0 2
+3]
+Number of bottom features \{bottom\_features.shape[0]\}
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 5/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 36/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 15/112
+Accuracy on training set
+training accuracy is 0.8482142857142857
+intercept value is [-1.]
+Most important features are: [-0.4444434 -1.6440671 -1.75       2.166667 ] and
+their respective weights are: [0 2 3 1]
+Least important features are: [[-0.4444434  -1.6440671  -1.75      ]
+ [-1.77777234  2.2372893  -2.41666324]
+ [-0.3888908   1.2881365   2.58333278]] and their respective weights are: [0 2
+3]
+Number of bottom features \{bottom\_features.shape[0]\}
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 5/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 36/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 15/112
+Accuracy on training set
+training accuracy is 0.9464285714285714
+intercept value is [-1.]
+Most important features are: [-0.4444434 -1.6440671 -1.75       2.166667 ] and
+their respective weights are: [0 2 3 1]
+Least important features are: [[-0.4444434  -1.6440671  -1.75      ]
+ [-0.77777194  4.1186507  -2.83331937]
+ [-0.6111146   3.1016905   3.74999578]] and their respective weights are: [0 2
+3]
+Number of bottom features \{bottom\_features.shape[0]\}
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 5/112
+Iteration : 10
+>Misclassifications = 0/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 36/112
+Iteration : 10
+>Misclassifications = 38/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 15/112
+Iteration : 10
+>Misclassifications = 4/112
+Accuracy on training set
+training accuracy is 0.9375
+intercept value is [-1.]
+Most important features are: [-0.4444434 -1.6440671 -1.75       2.166667 ] and
+their respective weights are: [0 2 3 1]
+Least important features are: [[-0.4444434  -1.6440671  -1.75      ]
+ [-1.99999608  3.5593373  -3.33329776]
+ [-1.27778526  4.2542276   4.66666018]] and their respective weights are: [0 2
+3]
+Number of bottom features \{bottom\_features.shape[0]\}
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 5/112
+Iteration : 10
+>Misclassifications = 0/112
+Iteration : 20
+>Misclassifications = 0/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 36/112
+Iteration : 10
+>Misclassifications = 38/112
+Iteration : 20
+>Misclassifications = 32/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 15/112
+Iteration : 10
+>Misclassifications = 4/112
+Iteration : 20
+>Misclassifications = 5/112
+Accuracy on training set
+training accuracy is 0.9107142857142857
+intercept value is [-1.]
+Most important features are: [-0.4444434 -1.6440671 -1.75       2.166667 ] and
+their respective weights are: [0 2 3 1]
+Least important features are: [[-0.4444434  -1.6440671  -1.75      ]
+ [-2.11110669  3.6610423  -3.24994161]
+ [-1.27778679  5.0847286   4.16665818]] and their respective weights are: [0 2
+3]
+Number of bottom features \{bottom\_features.shape[0]\}
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 5/112
+Iteration : 10
+>Misclassifications = 0/112
+Iteration : 20
+>Misclassifications = 0/112
+Iteration : 30
+>Misclassifications = 0/112
+Iteration : 40
+>Misclassifications = 0/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 36/112
+Iteration : 10
+>Misclassifications = 38/112
+Iteration : 20
+>Misclassifications = 32/112
+Iteration : 30
+>Misclassifications = 40/112
+Iteration : 40
+>Misclassifications = 40/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 15/112
+Iteration : 10
+>Misclassifications = 4/112
+Iteration : 20
+>Misclassifications = 5/112
+Iteration : 30
+>Misclassifications = 4/112
+Iteration : 40
+>Misclassifications = 6/112
+Accuracy on training set
+training accuracy is 0.8928571428571429
+intercept value is [-1.]
+Most important features are: [-0.4444434 -1.6440671 -1.75       2.166667 ] and
+their respective weights are: [0 2 3 1]
+Least important features are: [[-0.4444434  -1.6440671  -1.75      ]
+ [-0.72221977  4.9491908  -2.58325024]
+ [-2.55557059  6.2033666   5.33332018]] and their respective weights are: [0 2
+3]
+Number of bottom features \{bottom\_features.shape[0]\}
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 5/112
+Iteration : 10
+>Misclassifications = 0/112
+Iteration : 20
+>Misclassifications = 0/112
+Iteration : 30
+>Misclassifications = 0/112
+Iteration : 40
+>Misclassifications = 0/112
+Iteration : 50
+>Misclassifications = 0/112
+Iteration : 60
+>Misclassifications = 0/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 36/112
+Iteration : 10
+>Misclassifications = 38/112
+Iteration : 20
+>Misclassifications = 32/112
+Iteration : 30
+>Misclassifications = 40/112
+Iteration : 40
+>Misclassifications = 40/112
+Iteration : 50
+>Misclassifications = 37/112
+Iteration : 60
+>Misclassifications = 42/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 15/112
+Iteration : 10
+>Misclassifications = 4/112
+Iteration : 20
+>Misclassifications = 5/112
+Iteration : 30
+>Misclassifications = 4/112
+Iteration : 40
+>Misclassifications = 6/112
+Iteration : 50
+>Misclassifications = 4/112
+Iteration : 60
+>Misclassifications = 6/112
+Accuracy on training set
+training accuracy is 0.9464285714285714
+intercept value is [-1.]
+Most important features are: [-0.4444434 -1.6440671 -1.75       2.166667 ] and
+their respective weights are: [0 2 3 1]
+Least important features are: [[-0.4444434  -1.6440671  -1.75      ]
+ [-1.33333058  2.9831085  -3.3332126 ]
+ [-2.94446491  7.4745426   5.66665118]] and their respective weights are: [0 2
+3]
+Number of bottom features \{bottom\_features.shape[0]\}
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 5/112
+Iteration : 10
+>Misclassifications = 0/112
+Iteration : 20
+>Misclassifications = 0/112
+Iteration : 30
+>Misclassifications = 0/112
+Iteration : 40
+>Misclassifications = 0/112
+Iteration : 50
+>Misclassifications = 0/112
+Iteration : 60
+>Misclassifications = 0/112
+Iteration : 70
+>Misclassifications = 0/112
+Iteration : 80
+>Misclassifications = 0/112
+Iteration : 90
+>Misclassifications = 0/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 36/112
+Iteration : 10
+>Misclassifications = 38/112
+Iteration : 20
+>Misclassifications = 32/112
+Iteration : 30
+>Misclassifications = 40/112
+Iteration : 40
+>Misclassifications = 40/112
+Iteration : 50
+>Misclassifications = 37/112
+Iteration : 60
+>Misclassifications = 42/112
+Iteration : 70
+>Misclassifications = 37/112
+Iteration : 80
+>Misclassifications = 34/112
+Iteration : 90
+>Misclassifications = 38/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 15/112
+Iteration : 10
+>Misclassifications = 4/112
+Iteration : 20
+>Misclassifications = 5/112
+Iteration : 30
+>Misclassifications = 4/112
+Iteration : 40
+>Misclassifications = 6/112
+Iteration : 50
+>Misclassifications = 4/112
+Iteration : 60
+>Misclassifications = 6/112
+Iteration : 70
+>Misclassifications = 4/112
+Iteration : 80
+>Misclassifications = 4/112
+Iteration : 90
+>Misclassifications = 4/112
+Accuracy on training set
+training accuracy is 0.875
+intercept value is [-1.]
+Most important features are: [-0.4444434 -1.6440671 -1.75       2.166667 ] and
+their respective weights are: [0 2 3 1]
+Least important features are: [[-0.4444434  -1.6440671  -1.75      ]
+ [-0.11110814  3.1526104  -1.91650294]
+ [-3.6666951   8.6101286   7.08331518]] and their respective weights are: [0 2
+3]
+Number of bottom features \{bottom\_features.shape[0]\}
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 5/112
+Iteration : 10
+>Misclassifications = 0/112
+Iteration : 20
+>Misclassifications = 0/112
+Iteration : 30
+>Misclassifications = 0/112
+Iteration : 40
+>Misclassifications = 0/112
+Iteration : 50
+>Misclassifications = 0/112
+Iteration : 60
+>Misclassifications = 0/112
+Iteration : 70
+>Misclassifications = 0/112
+Iteration : 80
+>Misclassifications = 0/112
+Iteration : 90
+>Misclassifications = 0/112
+Iteration : 100
+>Misclassifications = 0/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 36/112
+Iteration : 10
+>Misclassifications = 38/112
+Iteration : 20
+>Misclassifications = 32/112
+Iteration : 30
+>Misclassifications = 40/112
+Iteration : 40
+>Misclassifications = 40/112
+Iteration : 50
+>Misclassifications = 37/112
+Iteration : 60
+>Misclassifications = 42/112
+Iteration : 70
+>Misclassifications = 37/112
+Iteration : 80
+>Misclassifications = 34/112
+Iteration : 90
+>Misclassifications = 38/112
+Iteration : 100
+>Misclassifications = 33/112
+Iterations about to start for Evaluation
+Iteration : 0
+>Misclassifications = 15/112
+Iteration : 10
+>Misclassifications = 4/112
+Iteration : 20
+>Misclassifications = 5/112
+Iteration : 30
+>Misclassifications = 4/112
+Iteration : 40
+>Misclassifications = 6/112
+Iteration : 50
+>Misclassifications = 4/112
+Iteration : 60
+>Misclassifications = 6/112
+Iteration : 70
+>Misclassifications = 4/112
+Iteration : 80
+>Misclassifications = 4/112
+Iteration : 90
+>Misclassifications = 4/112
+Iteration : 100
+>Misclassifications = 5/112
+Accuracy on training set
+training accuracy is 0.9017857142857143
+intercept value is [-1.]
+Most important features are: [-0.4444434 -1.6440671 -1.75       2.166667 ] and
+their respective weights are: [0 2 3 1]
+Least important features are: [[-0.4444434  -1.6440671  -1.75      ]
+ [-1.33332215  3.0170286  -3.24981967]
+ [-2.00003083  9.5253756   6.66665018]] and their respective weights are: [0 2
+3]
+Number of bottom features \{bottom\_features.shape[0]\}
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_6_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{val\PYZus{}iris}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<built-in method values of dict object at 0x7f96f760b7d0>
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}KNN Experiment\PYZsh{}\PYZsh{}\PYZsh{}}
+
+\PY{k}{def} \PY{n+nf}{knnEvaluator}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,}\PY{n}{X\PYZus{}test}\PY{p}{,}\PY{n}{y\PYZus{}train}\PY{p}{,}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{kneighborsList}\PY{p}{)}\PY{p}{:}
+    \PY{n}{kneighborsValue} \PY{o}{=} \PY{n}{kneighborsList}
+    \PY{n}{accuracylist} \PY{o}{=} \PY{p}{[}\PY{p}{]} 
+    \PY{n}{kpreds} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{kneighborsValue}\PY{p}{:}
+        \PY{n}{predictions} \PY{o}{=} \PY{n}{knn}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,}\PY{n}{X\PYZus{}test}\PY{p}{,}\PY{n}{y\PYZus{}train}\PY{p}{,}\PY{n}{k}\PY{o}{=}\PY{n}{i}\PY{p}{)}
+        \PY{n}{acc} \PY{o}{=} \PY{n}{accuracy}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{predictions}\PY{p}{)}
+        \PY{n}{kpreds}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{predictions}\PY{p}{)}
+        \PY{n}{accuracylist}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{acc}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{custom KNN classification accuracy FUNCTION}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{predictions}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{kpreds}\PY{p}{,}\PY{n}{accuracylist}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{iris}
+\PY{l+s+sd}{Evaluations}
+
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+ 
+
+\PY{n}{kvaluationIris}\PY{p}{,}\PY{n}{Accuracy} \PY{o}{=} \PY{n}{knnEvaluator}\PY{p}{(}\PY{n}{X\PYZus{}train} \PY{o}{=} \PY{n}{X\PYZus{}train2} \PY{p}{,}\PY{n}{X\PYZus{}test}\PY{o}{=}\PY{n}{X\PYZus{}test2}\PY{p}{,}\PY{n}{y\PYZus{}train} \PY{o}{=} \PY{n}{y\PYZus{}train2}\PY{p}{,}\PY{n}{y\PYZus{}test}\PY{o}{=} \PY{n}{y\PYZus{}test2}\PY{p}{,}\PY{n}{kneighborsList} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{,}\PY{l+m+mi}{25}\PY{p}{,}\PY{l+m+mi}{27}\PY{p}{,}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{50}\PY{p}{,}\PY{l+m+mi}{112}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{kvaluationIris}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{Accuracy}\PY{p}{)}
+
+\PY{n}{kneighborsList} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{11}\PY{p}{,}\PY{l+m+mi}{25}\PY{p}{,}\PY{l+m+mi}{27}\PY{p}{,}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{50}\PY{p}{,}\PY{l+m+mi}{112}\PY{p}{]}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{kneighborsList}\PY{p}{)}\PY{p}{,}\PY{n}{Accuracy}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{kneighborsList}\PY{p}{)}\PY{p}{,}\PY{n}{Accuracy}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{k neighbors}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Accuracy}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+custom KNN classification accuracy FUNCTION 1.0
+custom KNN classification accuracy FUNCTION 1.0
+custom KNN classification accuracy FUNCTION 1.0
+custom KNN classification accuracy FUNCTION 1.0
+custom KNN classification accuracy FUNCTION 1.0
+custom KNN classification accuracy FUNCTION 0.9736842105263158
+custom KNN classification accuracy FUNCTION 0.9736842105263158
+custom KNN classification accuracy FUNCTION 0.9736842105263158
+Iterations 30 misclassification 4
+Iterations 30 misclassification 4
+custom KNN classification accuracy FUNCTION 0.8947368421052632
+Iterations 0 misclassification 1
+Iterations 10 misclassification 4
+Iterations 0 misclassification 1
+Iterations 10 misclassification 4
+custom KNN classification accuracy FUNCTION 0.5789473684210527
+
+[1.0, 1.0, 1.0, 1.0, 1.0, 0.9736842105263158, 0.9736842105263158,
+0.9736842105263158, 0.8947368421052632, 0.5789473684210527]
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{a4a evaluations}
+
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+
+
+\PY{n}{kvaluationIris}\PY{p}{,}\PY{n}{Accuracy} \PY{o}{=} \PY{n}{knnEvaluator}\PY{p}{(}\PY{n}{X\PYZus{}train} \PY{o}{=} \PY{n}{X\PYZus{}train3}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{300}\PY{p}{]} \PY{p}{,}\PY{n}{X\PYZus{}test}\PY{o}{=}\PY{n}{X\PYZus{}test3}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{300}\PY{p}{]}\PY{p}{,}\PY{n}{y\PYZus{}train} \PY{o}{=} \PY{n}{y\PYZus{}train3}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{300}\PY{p}{]}\PY{p}{,}\PY{n}{y\PYZus{}test}\PY{o}{=} \PY{n}{y\PYZus{}test3}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{300}\PY{p}{]}\PY{p}{,}\PY{n}{kneighborsList} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{18}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{25}\PY{p}{,}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{35}\PY{p}{,}\PY{l+m+mi}{55}\PY{p}{]}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{kvaluationIris}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{Accuracy}\PY{p}{)}
+
+\PY{n}{kneighborsList} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{18}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{25}\PY{p}{,}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{35}\PY{p}{,}\PY{l+m+mi}{55}\PY{p}{]}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{kneighborsList}\PY{p}{)}\PY{p}{,}\PY{n}{Accuracy}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{kneighborsList}\PY{p}{)}\PY{p}{,}\PY{n}{Accuracy}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{k neighbors}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Accuracy}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Iterations 10 misclassification 3
+Iterations 30 misclassification 7
+Iterations 50 misclassification 11
+Iterations 80 misclassification 19
+Iterations 210 misclassification 38
+Iterations 220 misclassification 40
+Iterations 10 misclassification 3
+Iterations 30 misclassification 7
+Iterations 50 misclassification 11
+Iterations 80 misclassification 19
+Iterations 210 misclassification 38
+Iterations 220 misclassification 40
+custom KNN classification accuracy FUNCTION 0.8266666666666667
+Iterations 10 misclassification 3
+Iterations 30 misclassification 7
+Iterations 50 misclassification 11
+Iterations 80 misclassification 18
+Iterations 210 misclassification 37
+Iterations 220 misclassification 39
+Iterations 10 misclassification 3
+Iterations 30 misclassification 7
+Iterations 50 misclassification 11
+Iterations 80 misclassification 18
+Iterations 210 misclassification 37
+Iterations 220 misclassification 39
+custom KNN classification accuracy FUNCTION 0.8333333333333334
+Iterations 10 misclassification 3
+Iterations 30 misclassification 6
+Iterations 50 misclassification 9
+Iterations 80 misclassification 16
+Iterations 220 misclassification 33
+Iterations 10 misclassification 3
+Iterations 30 misclassification 6
+Iterations 50 misclassification 9
+Iterations 80 misclassification 16
+Iterations 220 misclassification 33
+custom KNN classification accuracy FUNCTION 0.84
+Iterations 10 misclassification 2
+Iterations 30 misclassification 6
+Iterations 50 misclassification 9
+Iterations 80 misclassification 16
+Iterations 220 misclassification 37
+Iterations 10 misclassification 2
+Iterations 30 misclassification 6
+Iterations 50 misclassification 9
+Iterations 80 misclassification 16
+Iterations 220 misclassification 37
+custom KNN classification accuracy FUNCTION 0.8333333333333334
+Iterations 10 misclassification 2
+Iterations 30 misclassification 6
+Iterations 50 misclassification 8
+Iterations 80 misclassification 14
+Iterations 220 misclassification 31
+Iterations 10 misclassification 2
+Iterations 30 misclassification 6
+Iterations 50 misclassification 8
+Iterations 80 misclassification 14
+Iterations 220 misclassification 31
+custom KNN classification accuracy FUNCTION 0.85
+Iterations 10 misclassification 2
+Iterations 30 misclassification 6
+Iterations 50 misclassification 8
+Iterations 80 misclassification 13
+Iterations 130 misclassification 24
+Iterations 210 misclassification 31
+Iterations 220 misclassification 35
+Iterations 10 misclassification 2
+Iterations 30 misclassification 6
+Iterations 50 misclassification 8
+Iterations 80 misclassification 13
+Iterations 130 misclassification 24
+Iterations 210 misclassification 31
+Iterations 220 misclassification 35
+custom KNN classification accuracy FUNCTION 0.8333333333333334
+Iterations 10 misclassification 2
+Iterations 30 misclassification 6
+Iterations 40 misclassification 8
+Iterations 50 misclassification 9
+Iterations 80 misclassification 14
+Iterations 130 misclassification 25
+Iterations 210 misclassification 32
+Iterations 220 misclassification 36
+Iterations 10 misclassification 2
+Iterations 30 misclassification 6
+Iterations 40 misclassification 8
+Iterations 50 misclassification 9
+Iterations 80 misclassification 14
+Iterations 130 misclassification 25
+Iterations 210 misclassification 32
+Iterations 220 misclassification 36
+custom KNN classification accuracy FUNCTION 0.8266666666666667
+Iterations 10 misclassification 2
+Iterations 30 misclassification 6
+Iterations 50 misclassification 8
+Iterations 60 misclassification 11
+Iterations 80 misclassification 15
+Iterations 210 misclassification 33
+Iterations 220 misclassification 37
+Iterations 10 misclassification 2
+Iterations 30 misclassification 6
+Iterations 50 misclassification 8
+Iterations 60 misclassification 11
+Iterations 80 misclassification 15
+Iterations 210 misclassification 33
+Iterations 220 misclassification 37
+custom KNN classification accuracy FUNCTION 0.8266666666666667
+Iterations 10 misclassification 2
+Iterations 30 misclassification 6
+Iterations 50 misclassification 8
+Iterations 80 misclassification 14
+Iterations 130 misclassification 25
+Iterations 210 misclassification 34
+Iterations 220 misclassification 38
+Iterations 10 misclassification 2
+Iterations 30 misclassification 6
+Iterations 50 misclassification 8
+Iterations 80 misclassification 14
+Iterations 130 misclassification 25
+Iterations 210 misclassification 34
+Iterations 220 misclassification 38
+custom KNN classification accuracy FUNCTION 0.82
+Iterations 10 misclassification 2
+Iterations 30 misclassification 6
+Iterations 50 misclassification 8
+Iterations 220 misclassification 38
+Iterations 10 misclassification 2
+Iterations 30 misclassification 6
+Iterations 50 misclassification 8
+Iterations 220 misclassification 38
+custom KNN classification accuracy FUNCTION 0.81
+Iterations 30 misclassification 3
+Iterations 40 misclassification 6
+Iterations 50 misclassification 7
+Iterations 130 misclassification 25
+Iterations 210 misclassification 38
+Iterations 30 misclassification 3
+Iterations 40 misclassification 6
+Iterations 50 misclassification 7
+Iterations 130 misclassification 25
+Iterations 210 misclassification 38
+custom KNN classification accuracy FUNCTION 0.7966666666666666
+
+[0.8266666666666667, 0.8333333333333334, 0.84, 0.8333333333333334, 0.85,
+0.8333333333333334, 0.8266666666666667, 0.8266666666666667, 0.82, 0.81,
+0.7966666666666666]
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{From implementation of knn on iris , we get to see that as the value of k increases the accuracy  decreases}
+
+\PY{l+s+sd}{However when implementig knn on a4a dataset, we see that as accuracy fluctuates between [78\PYZhy{}83], however if we analyze the graph on even higher values of k , it will surely result in lower accuracy and incorrect classifications.}
+
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'\textbackslash{}nFrom implementation of knn on iris , we get to see that as the value of k
+increases the accuracy  decreases\textbackslash{}n\textbackslash{}nHowever when implementig knn on a4a
+dataset, we see that as accuracy fluctuates between [78-83], however if we
+analyze the graph on even higher values of k , it will surely result in lower
+accuracy and incorrect classifications.\textbackslash{}n\textbackslash{}n'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+
+\PY{l+s+sd}{best attributes}
+
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{best 20 attribtes for IRIS}
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+
+\PY{k+kn}{from} \PY{n+nn}{pca} \PY{k+kn}{import} \PY{o}{*} 
+\PY{n}{val} \PY{o}{=} \PY{n}{pcaFunction}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{X\PYZus{}train2}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{val}\PY{p}{)}
+
+
+\PY{n}{xOne} \PY{o}{=} \PY{n}{val}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{xTwo} \PY{o}{=} \PY{n}{val}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{xOne}\PY{p}{,} \PY{n}{xTwo}\PY{p}{,}\PY{n}{c}\PY{o}{=}\PY{n}{y\PYZus{}train2}\PY{p}{,} \PY{n}{edgecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.8}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{cm}\PY{o}{.}\PY{n}{get\PYZus{}cmap}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{viridis}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Principal Component 1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Principal Component 2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+
+
+
+
+
+
+    
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[-1.27794380e+00 -6.77039792e-02]
+ [-1.30378601e+00  1.51422101e-01]
+ [ 2.06084228e-02  6.11382599e-01]
+ [-1.25954312e+00 -7.69934872e-01]
+ [ 9.56828470e-01  2.68773193e-01]
+ [ 1.02026781e+00 -1.37138581e-01]
+ [ 3.10540031e-01  9.79705511e-02]
+ [-1.47268731e+00  1.62170813e-01]
+ [-1.21277192e+00 -5.97835449e-01]
+ [-1.32225405e+00 -5.07752208e-02]
+ [-1.26865023e+00 -2.24391508e-01]
+ [-1.34017065e+00 -7.48130378e-02]
+ [ 5.13472756e-01  2.63536152e-01]
+ [-1.11064629e+00 -2.16038694e-01]
+ [ 4.93223784e-01 -2.11334780e-01]
+ [ 3.98940074e-04  2.79638582e-01]
+ [ 3.32692847e-02  3.57419550e-01]
+ [ 2.07496616e-01  6.57156045e-01]
+ [ 1.43311436e-01  2.42285726e-01]
+ [ 2.03865472e-01  1.15828851e-01]
+ [ 1.34146071e-01  1.37167911e-01]
+ [-1.25547794e+00 -4.43321613e-01]
+ [-1.14709998e+00 -4.38253764e-01]
+ [ 1.00173058e+00 -3.35316739e-01]
+ [-1.40177784e+00  9.22189557e-02]
+ [ 1.56592349e-01  1.62463563e-01]
+ [ 1.16791517e+00 -1.85290978e-01]
+ [ 1.24490821e-02  1.05301946e-01]
+ [-1.17760920e+00 -2.12347510e-01]
+ [ 2.07881287e-01  4.55483023e-02]
+ [ 5.29677700e-02  6.54130254e-01]
+ [ 3.25029124e-01  4.77070122e-01]
+ [ 1.04285061e+00 -1.19881939e-01]
+ [-1.07372057e+00 -6.54110994e-02]
+ [-1.84057414e-01  5.70037703e-01]
+ [-1.41556065e+00  3.90775253e-01]
+ [ 7.50923056e-01 -1.20853201e-01]
+ [ 3.65265154e-01 -1.20238931e-01]
+ [ 6.51345397e-01  1.89892859e-01]
+ [ 1.06580797e+00 -5.95531782e-02]
+ [ 1.03159835e+00 -3.70955315e-01]
+ [ 5.67687641e-01  1.02928484e-02]
+ [ 1.43910148e+00 -9.21327802e-01]
+ [-1.24438466e+00  1.80199224e-01]
+ [ 1.17414621e+00 -1.97611717e-01]
+ [ 5.44502187e-01  3.26430416e-01]
+ [ 6.28869745e-01  3.11743241e-01]
+ [-7.68415602e-02  4.76571803e-01]
+ [ 5.81981675e-01 -2.53230096e-01]
+ [ 1.16957831e+00 -3.05491753e-01]
+ [-1.27911429e+00 -4.20004467e-01]
+ [-3.81705059e-01  5.71831623e-01]
+ [ 8.87858807e-01  2.38951395e-01]
+ [ 1.01103324e+00 -2.38237294e-01]
+ [-1.16101827e+00 -1.04010659e+00]
+ [-1.31363960e+00 -1.23817412e-01]
+ [-1.33955099e+00  9.93280143e-02]
+ [ 2.87113367e-02  5.03306767e-01]
+ [ 6.62970816e-01  4.84037373e-01]
+ [ 6.95759212e-02  3.33906407e-01]
+ [ 4.75416063e-01 -9.62656451e-02]
+ [ 1.03698429e+00 -3.18256694e-01]
+ [ 1.21862407e+00 -3.33220463e-01]
+ [-1.18445046e+00 -1.20399608e-01]
+ [-1.28567337e+00  8.18082073e-01]
+ [-1.28429212e+00 -4.48256553e-01]
+ [-4.08846255e-01  7.00463522e-01]
+ [ 4.42710452e-01  5.79216685e-01]
+ [ 2.60473891e-03  8.38299954e-02]
+ [ 3.21437069e-01  7.88684629e-02]
+ [ 8.32907209e-01 -7.48194367e-02]
+ [ 7.50566973e-01  3.43609171e-01]
+ [ 4.53286778e-02  4.36850122e-01]
+ [ 5.18030983e-01  1.17647780e-01]
+ [ 1.05725281e+00 -2.44298218e-01]
+ [ 1.45193628e+00 -1.68260321e-01]
+ [ 4.28644359e-01 -2.68364505e-01]
+ [ 1.18630467e+00 -2.32841981e-01]
+ [-1.31322472e+00 -8.46066270e-01]
+ [ 1.38339148e+00 -6.66563236e-01]
+ [ 7.87908086e-01 -2.28012656e-01]
+ [-1.44843087e+00  3.12994300e-01]
+ [-3.29736168e-02  4.20590855e-01]
+ [ 6.89562619e-02  1.59765355e-01]
+ [ 4.99148333e-01  6.37699781e-01]
+ [-1.10098817e+00 -5.83421781e-01]
+ [-1.31302866e+00 -2.03444025e-01]
+ [-1.21794076e+00 -3.72321194e-01]
+ [-1.35511495e+00  1.25211225e-01]
+ [-6.65634730e-02  2.83329804e-01]
+ [-1.24906950e+00 -3.20555087e-01]
+ [-1.31777390e+00 -4.46410963e-01]
+ [ 5.19764101e-01 -6.57226932e-03]
+ [ 1.20234948e+00 -1.13050228e-01]
+ [ 1.18742673e+00 -2.77435211e-01]
+ [ 1.02494314e+00  1.09847154e-01]
+ [-3.73081337e-01  7.52557247e-01]
+ [ 3.76773271e-01 -2.18967910e-01]
+ [-7.91340225e-02  1.68864825e-01]
+ [-1.35863858e+00 -2.77009727e-01]
+ [-1.27849463e+00 -2.45863415e-01]
+ [ 5.23309015e-01  3.12405276e-02]
+ [ 1.31570068e+00 -9.76119714e-01]
+ [ 1.68034776e+00 -1.11252298e-02]
+ [ 1.43752500e+00 -2.97610926e-01]
+ [ 1.46589658e+00 -3.31728811e-01]
+ [ 5.94838425e-01  1.35428398e-01]
+ [-1.35511495e+00  1.25211225e-01]
+ [-2.02525004e-01  3.67840165e-01]
+ [-1.09091942e-01  5.72931454e-01]
+ [ 3.68701954e-01 -2.21533901e-01]
+ [ 5.12931403e-01  3.39143231e-01]]
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+
+\PY{l+s+sd}{best 20 attributes for a4a}
+
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+
+\PY{n}{val1} \PY{o}{=} \PY{n}{pcaFunction}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,} \PY{n}{X\PYZus{}train3}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{val1}\PY{p}{)}
+\PY{n}{xOne} \PY{o}{=} \PY{n}{val1}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{xTwo} \PY{o}{=} \PY{n}{val1}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{val1}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{xOne}\PY{p}{,}\PY{n}{xTwo}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{n}{y\PYZus{}train3}\PY{p}{,} \PY{n}{edgecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{cm}\PY{o}{.}\PY{n}{get\PYZus{}cmap}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Principal Component 1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Principal Component 2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ 1.55028692+0.j  0.90102881+0.j -0.25000103+0.j {\ldots} -0.09937853+0.j
+  -0.0175714 +0.j -0.24425306+0.j]
+ [ 1.11973545+0.j -0.29013016+0.j  0.74574003+0.j {\ldots} -0.65602843+0.j
+   0.08634279+0.j -0.74312984+0.j]
+ [ 1.00602206+0.j -0.47009495+0.j  1.08187137+0.j {\ldots} -0.59502384+0.j
+   0.33970601+0.j  0.00331059+0.j]
+ {\ldots}
+ [-1.28446051+0.j  0.91227859+0.j -0.02810784+0.j {\ldots} -0.14688976+0.j
+  -0.23173785+0.j  0.07269927+0.j]
+ [ 0.15493354+0.j  0.9389796 +0.j  0.05156615+0.j {\ldots} -0.24622729+0.j
+  -0.44959615+0.j  0.51633581+0.j]
+ [-1.12671081+0.j -0.57218413+0.j  0.3862135 +0.j {\ldots} -0.42449596+0.j
+  -0.39678954+0.j -0.18901299+0.j]]
+[[ 1.55028692+0.j  0.90102881+0.j -0.25000103+0.j {\ldots} -0.09937853+0.j
+  -0.0175714 +0.j -0.24425306+0.j]
+ [ 1.11973545+0.j -0.29013016+0.j  0.74574003+0.j {\ldots} -0.65602843+0.j
+   0.08634279+0.j -0.74312984+0.j]
+ [ 1.00602206+0.j -0.47009495+0.j  1.08187137+0.j {\ldots} -0.59502384+0.j
+   0.33970601+0.j  0.00331059+0.j]
+ {\ldots}
+ [-1.28446051+0.j  0.91227859+0.j -0.02810784+0.j {\ldots} -0.14688976+0.j
+  -0.23173785+0.j  0.07269927+0.j]
+ [ 0.15493354+0.j  0.9389796 +0.j  0.05156615+0.j {\ldots} -0.24622729+0.j
+  -0.44959615+0.j  0.51633581+0.j]
+ [-1.12671081+0.j -0.57218413+0.j  0.3862135 +0.j {\ldots} -0.42449596+0.j
+  -0.39678954+0.j -0.18901299+0.j]]
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Users/suryanshsoni/opt/anaconda3/lib/python3.7/site-
+packages/numpy/core/\_asarray.py:138: ComplexWarning: Casting complex values to
+real discards the imaginary part
+  return array(a, dtype, copy=False, order=order, subok=True)
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_13_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+ \begin{tcolorbox}
+    Code snapshot - knn
+
+    
+    \begin{center}
+    
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{knn.png}
+    \end{center}
+    
+    
+    
+    \end{tcolorbox}
+    
+    \begin{tcolorbox}
+    Code Snap shot - perceptron
+    
+    \begin{center}
+    
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{perceptron.png}
+    \end{center}
+    
+    
+    
+    \end{tcolorbox}
+    
+     \begin{tcolorbox}
+    Code Snap shot - PCA
+    
+    \begin{center}
+    
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{pca.png}
+    \end{center}
+    
+    
+    
+    \end{tcolorbox}
+    
+    
+     \begin{tcolorbox}
+    Code Snap shot - stochastic gradient descent
+    
+    \begin{center}
+    
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{sgd.png}
+    \end{center}
+    
+    
+    
+    \end{tcolorbox}
+    
+     \begin{tcolorbox}
+    Code Snap shot - Data reader
+    
+    \begin{center}
+    
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{datafethcer.png}
+    \end{center}
+    
+    
+    
+    \end{tcolorbox}
+    
+    
+    
+\end{document}
